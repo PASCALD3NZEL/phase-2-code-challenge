@@ -8,6 +8,12 @@ const API_URL = "http://localhost:3001/goals";
 
 function App() {
   const [goals, setGoals] = useState([]);
+  const [isDark, setIsDark] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    document.body.classList.toggle('dark');
+  };
 
   useEffect(() => {
     fetch(API_URL)
@@ -17,7 +23,12 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="app">
+      <button className="theme-toggle" onClick={toggleTheme}>
+        {isDark ? '☀️ Light' : '🌙 Dark'}
+      </button>
+      
+      <h1>SMART Goal Planner</h1>
       <Overview goals={goals} />
       <AddGoalForm goals={goals} setGoals={setGoals} />
       <GoalList goals={goals} setGoals={setGoals} />
