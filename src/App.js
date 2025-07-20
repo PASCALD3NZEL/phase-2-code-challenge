@@ -22,9 +22,67 @@ function App() {
       .catch(err => console.error('Error loading goals:', err));
   }, []);
 
-  const handleAddGoal = (newGoal) => {
-    const goalWithId = { ...newGoal, id: Date.now() };
-    setGoals([...goals, goalWithId]);
+  const handleAddGoal = async (newGoal) => {
+    try {
+      const goalWithId = { ...newGoal, id: Date.now().toString() };
+      
+      // Save to backend
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(goalWithId)
+      });
+      
+      if (response.ok) {
+        const savedGoal = await response.json();
+        setGoals([...goals, savedGoal]);
+      } else {
+        console.error('Failed to save goal');
+      }
+    } catch (error) {
+      console.error('Error saving goal:', error);
+    }
+  };
+
+  const handleUpdateGoal = async (goalId, updatedData) => {
+    try {
+      const response = await fetch(`${API_URL}/${goalId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData)
+      });
+      
+      if (response.ok) {
+        const updatedGoal = await response.json();
+        setGoals(goals.map(goal => 
+          goal.id === goalId ? updatedGoal : goal
+        ));
+      } else {
+        console.error('Failed to update goal');
+      }
+    } catch (error) {
+      console.error('Error updating goal:', error);
+    }
+  };
+
+  const handleDeleteGoal = async (goalId) => {
+    try {
+      const response = await fetch(`${API_URL}/${goalId}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        setGoals(goals.filter(goal => goal.id !== goalId));
+      } else {
+        console.error('Failed to delete goal');
+      }
+    } catch (error) {
+      console.error('Error deleting goal:', error);
+    }
   };
 
   return (
@@ -36,7 +94,11 @@ function App() {
       <h1>SMART Goal Planner</h1>
       <Overview goals={goals} />
       <AddGoalForm onAdd={handleAddGoal} />
-      <GoalList goals={goals} setGoals={setGoals} />
+      <GoalList 
+        goals={goals} 
+        onUpdate={handleUpdateGoal}
+        onDelete={handleDeleteGoal}
+      />
     </div>
   );
 }

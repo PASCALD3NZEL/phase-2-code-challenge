@@ -35,6 +35,15 @@
       "category": "Real Estate",
       "deadline": "2027-12-31",
       "createdAt": "2024-02-01"
+    },
+    {
+      "id": "1753034510190",
+      "name": "FAMILY TRIP",
+      "targetAmount": 680000,
+      "savedAmount": 125000,
+      "category": "FAMILY",
+      "deadline": "2026-08-22",
+      "createdAt": "2025-07-20"
     }
   ]
 }
