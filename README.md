@@ -70,7 +70,7 @@ This project uses json-server for a mock RESTful API.
 All CRUD actions are persisted to db.json.
 
 Feel free to expand with features such as authentication, goal editing modals, or charts.
-
+THE DEPLOYED WORK LINK IS https://phase-2-code-challenge-kappa-mauve.vercel.app/ To ensure the site is fully functioning
 License
 MIT (or your chosen license)
 
